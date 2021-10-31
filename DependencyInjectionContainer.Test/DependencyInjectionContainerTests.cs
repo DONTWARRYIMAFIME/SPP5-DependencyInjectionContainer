@@ -172,7 +172,7 @@ namespace DependencyInjectionContainer.Test
         }
         
         [Test]
-        public void OrderMarkedGenericDependencyTest2()
+        public void OrderMarkedGenericDependencyTest()
         {
             var dependencies = new DependenciesConfig();
            
@@ -185,6 +185,23 @@ namespace DependencyInjectionContainer.Test
             var service2 = provider.Resolve<IService<IRepository>>(OrdinalMark.First);
             
             Assert.IsInstanceOf(typeof(ServiceImpl1<IRepository>),service2);
+        }
+        
+        [Test]
+        public void OrderMarkedListDependencyTest()
+        {
+            var dependencies = new DependenciesConfig();
+           
+            dependencies.Register<IService, ServiceImpl>(Scope.Singleton, OrdinalMark.Second);
+            dependencies.Register<IService, ServiceImpl1>(Scope.Singleton, OrdinalMark.Second);
+            dependencies.Register<IService, ServiceImpl2>();
+            
+            var provider = new DependencyProvider(dependencies);
+            
+            var service2 = provider.Resolve<IEnumerable<IService>>(OrdinalMark.Second).ToList();
+            
+            Assert.AreEqual(2, service2.Count);
+            Assert.IsInstanceOf(typeof(IEnumerable<IService>),service2);
         }
         
     }

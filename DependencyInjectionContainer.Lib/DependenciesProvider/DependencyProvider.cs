@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DependencyInjectionContainer.Enums;
 
 namespace DependencyInjectionContainer.DependenciesProvider
@@ -24,7 +25,7 @@ namespace DependencyInjectionContainer.DependenciesProvider
             if (dependencyType.IsGenericType && dependencyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
                 var genericArgument = dependencyType.GetGenericArguments()[0];
-                return InstanceGenerator.GenerateCollectionOfInstances(genericArgument, _config.Implementations[genericArgument], _config);
+                return InstanceGenerator.GenerateCollectionOfInstances(genericArgument, _config.Implementations[genericArgument].Where(bean => mark == bean.Mark).ToList(), _config);
             }
 
             if (!_config.Implementations.ContainsKey(dependencyType))

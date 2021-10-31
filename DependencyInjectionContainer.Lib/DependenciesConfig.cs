@@ -35,11 +35,6 @@ namespace DependencyInjectionContainer
         {
             if (Implementations.ContainsKey(dependencyType))
             {
-                if (bean.Mark != OrdinalMark.None && Implementations[dependencyType].Find(b => b.Mark == bean.Mark) != null)
-                {
-                    throw new ArgumentException("[ERROR] Dependency of type: " + dependencyType + " with ordinal mark: " + bean.Mark  + " already registered");
-                }
-                
                 Implementations[dependencyType].Add(bean);
             }
             else
